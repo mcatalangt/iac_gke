@@ -14,7 +14,7 @@ remote_state {
   }
 }
 
-# Genera el provider de google automáticamente también
+# Genera el provider de google automáticamente también Google
 generate "provider" {
   path = "provider.tf"
   if_exists = "overwrite_terragrunt"
