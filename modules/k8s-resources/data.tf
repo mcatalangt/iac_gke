@@ -6,7 +6,4 @@ data "terraform_remote_state" "gke_state" {
   }
 }
 
-
-
-
 data "google_client_config" "default" {}
