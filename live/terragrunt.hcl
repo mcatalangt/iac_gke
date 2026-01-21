@@ -22,6 +22,7 @@ remote_state {
   }
 }
 
+
 # Genera el provider de google automáticamente también Google
 generate "provider" {
   path = "provider.tf"
