@@ -19,7 +19,7 @@ jobs:
       - name: 🕵️ Debug - List files
         run: |
           echo "Listing live/dev structure:"
-          ls -R live/dev
+          ls -R *
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
