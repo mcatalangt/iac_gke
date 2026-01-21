@@ -13,19 +13,24 @@ jobs:
       contents: 'read'
       id-token: 'write' # Necesario para Workload Identity
 
+    env:
+      # Opción A: Si lo guardaste en Secrets (Recomendado para IDs sensibles)
+      GOOGLE_PROJECT_ID: ${{ vars.GCP_PROJECT }}
+
     steps:
-      - uses: actions/checkout@v3
+     # Checkout del código
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: 🕵️ Debug - List files
-        run: |
-          echo "Listing live/dev structure:"
-          ls -R *
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1
+      # Autenticación con Google Cloud
+      - name: Set up Google Cloud Auth (Service Account Key)
+        uses: 'google-github-actions/auth@v2'
         with:
-          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/github/providers/my-repo'
-          service_account: 'terraform-sa@mi-proyecto.iam.gserviceaccount.com'
+          credentials_json: ${{ secrets.GCP_SA_KEY }} 
+
+      # Configurar gcloud y Terraform
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
