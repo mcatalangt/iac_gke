@@ -1,0 +1,40 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: [ "live/**" ] # Solo corre si cambias config
+
+jobs:
+  terragrunt:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write' # Necesario para Workload Identity
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/github/providers/my-repo'
+          service_account: 'terraform-sa@mi-proyecto.iam.gserviceaccount.com'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+
+      - name: Setup Terragrunt
+        uses: gruntwork-io/setup-terragrunt@v1.0.0
+        with:
+          terragrunt_version: v0.50.0
+
+      - name: Terragrunt Plan
+        # run-all ejecuta en paralelo respetando dependencias
+        run: cd live/prod && terragrunt run-all plan --terragrunt-non-interactive
+
+      - name: Terragrunt Apply
+        if: github.ref == 'refs/heads/main'
+        run: cd live/prod && terragrunt run-all apply --terragrunt-non-interactive
