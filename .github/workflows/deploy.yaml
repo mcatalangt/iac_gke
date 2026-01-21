@@ -37,8 +37,8 @@ jobs:
 
       - name: Terragrunt Plan
         # run-all ejecuta en paralelo respetando dependencias
-        run: cd live/prod && terragrunt run-all plan --terragrunt-non-interactive
+        run: cd live/dev && terragrunt run-all plan --terragrunt-non-interactive
 
       - name: Terragrunt Apply
         if: github.ref == 'refs/heads/main'
-        run: cd live/prod && terragrunt run-all apply --terragrunt-non-interactive
+        run: cd live/dev && terragrunt run-all apply --terragrunt-non-interactive
