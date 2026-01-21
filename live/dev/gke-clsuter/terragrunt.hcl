@@ -9,7 +9,7 @@ terraform {
 
 
 inputs = {
-  cluster_name = "data-reliability-prod"
+  cluster_name = "data-reliability-dev"
   node_count   = 1
-  machine_type = "e2-standard-4"
+  machine_type = "e2-medium"
 }
