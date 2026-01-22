@@ -1,3 +1,10 @@
+
+locals {
+  # Leemos la variable de entorno. 
+  # El segundo valor es un "fallback" por si la variable no existe (útil para pruebas locales)
+  gcp_project_id = get_env("GOOGLE_PROJECT_ID", "mi-proyecto-local-fallback")
+}
+
 include "root" {
   path = find_in_parent_folders()
 }
@@ -19,8 +26,8 @@ dependency "gke" {
 }
 
 inputs = {
-  # Inyectamos los valores reales del cluster automáticamente
-  host                   = dependency.gke.outputs.host
-  cluster_ca_certificate = dependency.gke.outputs.cluster_ca_certificate
-  token                  = dependency.gke.outputs.token
+  project_id = "${local.gcp_project_id}"
+  region   = "us-central1"
+  cluster_name = "ia-cluster"
+  environment =  "dev"
 }

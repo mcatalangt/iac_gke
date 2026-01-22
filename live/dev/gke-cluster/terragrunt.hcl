@@ -1,3 +1,9 @@
+locals {
+  # Leemos la variable de entorno. 
+  # El segundo valor es un "fallback" por si la variable no existe (útil para pruebas locales)
+  gcp_project_id = get_env("GOOGLE_PROJECT_ID", "mi-proyecto-local-fallback")
+}
+
 include "root" {
   path = find_in_parent_folders()
 }
@@ -9,7 +15,8 @@ terraform {
 
 
 inputs = {
-  cluster_name = "data-reliability-dev"
-  node_count   = 1
-  machine_type = "e2-medium"
+  project_id = "${local.gcp_project_id}"
+  region   = "us-central1"
+  cluster_name = "ia-cluster"
+  environment =  "dev"
 }
