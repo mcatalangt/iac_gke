@@ -42,4 +42,5 @@ inputs = {
   region   = "us-central1"
   cluster_name = "inteligencia-artificial"
   environment =  "dev"
+  
 }
