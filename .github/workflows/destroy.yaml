@@ -12,7 +12,7 @@ env:
   PROJECT_ID: ${{ vars.GCP_PROJECT }}
   REGION: us-central1-a
   CLUSTER_NAME: dev-gke-app
-  TF_WORKING_DIR: terraform/gke-cluster
+  TF_WORKING_DIR: live/dev 
 
 jobs:
   destroy:
