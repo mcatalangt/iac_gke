@@ -3,9 +3,8 @@ name: Deploy Infrastructure
 on:
   push:
     branches: [ "main" ]
-    paths: [ "live/**", "modules/**" ] # Solo corre si cambias config
+    paths: [ "live/**", "modules/**", ".github/**" ] # Solo corre si cambias config
 
-    
 jobs:
   terragrunt:
     runs-on: ubuntu-latest

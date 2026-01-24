@@ -1,0 +1,50 @@
+name: Destroy GKE Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Escribe "destroy" para confirmar la eliminación de GKE'
+        required: true
+        default: 'destroy'
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT }}
+  REGION: us-central1-a
+  CLUSTER_NAME: dev-gke-app
+  TF_WORKING_DIR: terraform/gke-cluster
+
+jobs:
+  destroy:
+    name: "Terraform Destroy"
+    runs-on: ubuntu-latest
+
+    # Solo ejecuta si el usuario confirma escribiendo 'destroy'
+    if: github.event.inputs.confirm == 'destroy'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Autenticación con Google Cloud
+      - name: Set up Google Cloud Auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Inicializar Terraform
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+      # Ejecutar Destroy
+      - name: Terraform Destroy
+        run: |
+          terraform destroy -auto-approve \
+            -var="project_id=${{ env.PROJECT_ID }}" \
+            -var="region=${{ env.REGION }}" \
+            -var="cluster_name=${{ env.CLUSTER_NAME }}"
+        working-directory: ${{ env.TF_WORKING_DIR }}
