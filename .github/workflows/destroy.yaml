@@ -10,13 +10,11 @@ on:
 
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT }}
-  REGION: us-central1-a
-  CLUSTER_NAME: inteligencia-artificial-cluster	
-  TF_WORKING_DIR: live/dev 
+  TF_VAR_region: us-central1-a
 
 jobs:
   destroy:
-    name: "Terraform Destroy"
+    name: "Terragrunt Destroy"
     runs-on: ubuntu-latest
 
     # Solo ejecuta si el usuario confirma escribiendo 'destroy'
@@ -34,17 +32,19 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
 
-      # Inicializar Terraform
-      - name: Terraform Init
-        run: terraform init
-        working-directory: ${{ env.TF_WORKING_DIR }}
-
-      # Ejecutar Destroy
-      - name: Terraform Destroy
+      - name: Setup Terragrunt
         run: |
-          terraform destroy -auto-approve \
-            -var="project_id=${{ env.PROJECT_ID }}" \
-            -var="region=${{ env.REGION }}" \
-            -var="cluster_name=${{ env.CLUSTER_NAME }}"
-        working-directory: ${{ env.TF_WORKING_DIR }}
+          TG_VERSION="v0.54.12"
+          echo "Installing Terragrunt $TG_VERSION..."
+          wget -q "https://github.com/gruntwork-io/terragrunt/releases/download/${TG_VERSION}/terragrunt_linux_amd64"
+          chmod +x terragrunt_linux_amd64
+          sudo mv terragrunt_linux_amd64 /usr/local/bin/terragrunt
+          terragrunt --version
+
+      - name: Terragrunt Destroy
+        working-directory: live/dev
+        run: |
+          terragrunt run-all destroy --terragrunt-non-interactive
