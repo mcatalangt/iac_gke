@@ -11,7 +11,7 @@ on:
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT }}
   REGION: us-central1-a
-  CLUSTER_NAME: dev-gke-app
+  CLUSTER_NAME: inteligencia-artificial-cluster	
   TF_WORKING_DIR: live/dev 
 
 jobs:
