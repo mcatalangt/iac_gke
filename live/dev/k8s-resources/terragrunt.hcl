@@ -39,7 +39,7 @@ generate "provider_k8s" {
   contents  = <<EOF
 provider "kubernetes" {
   host                   = "https://${dependency.gke.outputs.host}"
-  token                  = "${dependency.gke.outputs.token}"
+  #token                  = "${dependency.gke.outputs.token}"
   cluster_ca_certificate = base64decode("${dependency.gke.outputs.cluster_ca_certificate}")
 }
 EOF
