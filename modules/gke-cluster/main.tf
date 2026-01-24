@@ -14,6 +14,7 @@ resource "google_container_cluster" "gke_cluster" {
   network    = "default"
   subnetwork = "default"
 
+
   # Para un clúster privado 
 #  master_authorized_networks_config {
 #    cidr_blocks {
@@ -39,3 +40,5 @@ resource "google_container_node_pool" "primary_nodes" {
     disk_size_gb = 20
   }
 }
+
+data "google_client_config" "default" {}

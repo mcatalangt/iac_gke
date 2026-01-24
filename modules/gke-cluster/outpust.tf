@@ -20,5 +20,5 @@ output "cluster_ca_certificate" {
 output "token" {
   description = "Token de acceso (requiere data google_client_config)"
   sensitive   = true
-  value       = data.google_client_config.access_token
+  value       = data.google_client_config.default.access_token
 }
