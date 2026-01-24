@@ -17,8 +17,8 @@ output "cluster_ca_certificate" {
   value       = google_container_cluster.gke_cluster.master_auth[0].cluster_ca_certificate
 }
 
-output "token" {
-  description = "Token de acceso (requiere data google_client_config)"
-  sensitive   = true
-  value       = data.google_client_config.default.access_token
-}
+#output "token" {
+#  description = "Token de acceso (requiere data google_client_config)"
+#  sensitive   = true
+#  value       = data.google_client_config.default.access_token
+#}
