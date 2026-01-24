@@ -21,7 +21,7 @@ dependency "gke" {
   mock_outputs = {
     host                   = "https://1.2.3.4"
     cluster_ca_certificate = "b64encoded"
-    #token                  = "mock-token"
+    token                  = "mock-token"
   }
 
   # ESTO ES LO QUE TE FALTA:
@@ -39,7 +39,7 @@ generate "provider_k8s" {
   contents  = <<EOF
 provider "kubernetes" {
   host                   = "https://${dependency.gke.outputs.host}"
-  #token                  = "${dependency.gke.outputs.token}"
+  token                  = "${dependency.gke.outputs.token}"
   cluster_ca_certificate = base64decode("${dependency.gke.outputs.cluster_ca_certificate}")
 }
 EOF
