@@ -23,6 +23,14 @@ dependency "gke" {
     cluster_ca_certificate = "b64encoded"
     token                  = "mock-token"
   }
+
+  # ESTO ES LO QUE TE FALTA:
+  # Permite usar mocks en el plan
+  mock_outputs_allowed_terraform_commands = ["validate", "plan", "plan-all"]
+  
+  # "shallow": Si el output no está en el estado real, usa el del mock.
+  # Sin esto, Terragrunt ve el estado vacío e ignora el mock, causando tu error.
+  mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
 generate "provider_k8s" {
