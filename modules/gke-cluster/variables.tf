@@ -15,6 +15,8 @@ variable "cluster_name" {
   default     = "gke"
 }
 
+
+
 variable "environment" {
   description = "Nombre base para el env GKE"
   type        = string
