@@ -20,7 +20,7 @@ dependency "gke" {
   # Mock outputs para que el 'plan' inicial no falle si el cluster no existe aún
   mock_outputs = {
     host                   = "https://1.2.3.4"
-    cluster_ca_certificate = "b64encoded"
+    cluster_ca_certificate = "dGVzdA=="
     token                  = "mock-token"
   }
 
