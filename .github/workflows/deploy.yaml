@@ -1,33 +1,38 @@
 name: Deploy Infrastructure
 
+#on:
+#  push:
+#    branches: [ "main" ]
+#    paths: [ "live/**", "modules/**", ".github/**" ] 
 on:
-  push:
-    branches: [ "main" ]
-    paths: [ "live/**", "modules/**", ".github/**" ] # Solo corre si cambias config
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Escribe "deploy" para confirmar la eliminación de GKE'
+        required: true
+        default: 'deploy'
 
 jobs:
   terragrunt:
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'
-      id-token: 'write' # Necesario para Workload Identity
+      id-token: 'write'
 
     env:
-      # Opción A: Si lo guardaste en Secrets (Recomendado para IDs sensibles)
       GOOGLE_PROJECT_ID: ${{ vars.GCP_PROJECT }}
 
     steps:
-     # Checkout del código
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Autenticación con Google Cloud
       - name: Set up Google Cloud Auth (Service Account Key)
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }} 
+#         credentials_json: ${{ secrets.GCP_SA_KEY }} 
+          workload_identity_provider: 'projects/397005106927/locations/global/workloadIdentityPools/github-actions-pool/providers/provider-fix'
+          service_account: 'github-actions-sa@lakehouse-475923.iam.gserviceaccount.com'
 
-      # Configurar gcloud y Terraform
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
 
@@ -46,7 +51,6 @@ jobs:
                 terragrunt --version
 
       - name: Terragrunt Plan
-        # run-all ejecuta en paralelo respetando dependencias
         run: cd live/dev && terragrunt run-all plan --terragrunt-non-interactive
 
       - name: Terragrunt Apply
