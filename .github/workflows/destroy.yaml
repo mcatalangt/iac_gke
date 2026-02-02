@@ -1,4 +1,4 @@
-name: Destroy GKE Infrastructure
+name: Destroy GKE 
 
 on:
   workflow_dispatch:
@@ -13,9 +13,11 @@ env:
   GOOGLE_REGION: ${{ vars.GCP_REGION }}
 
 jobs:
-  destroy:
-    name: "Terragrunt Destroy"
+  terragrunt:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     # Solo ejecuta si el usuario confirma escribiendo 'destroy'
     if: github.event.inputs.confirm == 'destroy'
@@ -34,7 +36,7 @@ jobs:
 
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
-        
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
