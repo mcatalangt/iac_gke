@@ -1,16 +1,21 @@
 name: Deploy GKE
 
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy (dev, staging, prod)"
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
   push:
     branches: [ "main" ]
-    paths: [ "live/**", "modules/**", ".github/**" ] 
-#on:
-#  workflow_dispatch:
-#    inputs:
-#      confirm:
-#        description: 'Escribe "deploy" para confirmar la eliminación de GKE'
-#        required: true
-#        default: 'deploy'
+    paths: [ "live/**", "modules/**", ".github/**" ]
 
 jobs:
   terragrunt:
@@ -30,7 +35,6 @@ jobs:
       - name: Set up Google Cloud Auth (Service Account Key)
         uses: 'google-github-actions/auth@v2'
         with:
-#         credentials_json: ${{ secrets.GCP_SA_KEY }} 
           workload_identity_provider: 'projects/397005106927/locations/global/workloadIdentityPools/github-actions-pool/providers/provider-fix'
           service_account: 'github-actions-sa@lakehouse-475923.iam.gserviceaccount.com'
 
