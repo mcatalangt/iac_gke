@@ -10,7 +10,7 @@ on:
 
 env:
   PROJECT_ID: ${{ vars.GCP_PROJECT }}
-  TF_VAR_region: us-central1-a
+  GOOGLE_REGION: ${{ vars.GCP_REGION }}
 
 jobs:
   destroy:
@@ -32,7 +32,9 @@ jobs:
           workload_identity_provider: 'projects/397005106927/locations/global/workloadIdentityPools/github-actions-pool/providers/provider-fix'
           service_account: 'github-actions-sa@lakehouse-475923.iam.gserviceaccount.com'
 
-
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
