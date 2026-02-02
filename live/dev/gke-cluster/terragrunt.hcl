@@ -15,6 +15,6 @@ terraform {
 inputs = {
   project_id = "${local.gcp_project_id}"
   region   = "${local.gcp_region}"
-  cluster_name = "IA"
+  cluster_name = "ia"
   environment =  "dev"
 }
