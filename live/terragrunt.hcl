@@ -11,7 +11,6 @@ remote_state {
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    # Terragrunt creará este bucket automáticamente si no existe
     bucket = "backend-terraform15"
     prefix = "${path_relative_to_include()}/terraform.tfstate"
     project = "${local.gcp_project_id}"
