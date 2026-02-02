@@ -1,8 +1,7 @@
 
 locals {
-  # Leemos la variable de entorno. 
-  # El segundo valor es un "fallback" por si la variable no existe (útil para pruebas locales)
   gcp_project_id = get_env("GOOGLE_PROJECT_ID", "mi-proyecto-local-fallback")
+  gcp_region = get_env("GOOGLE_REGION", "us-central1")
 }
 
 include "root" {
@@ -13,7 +12,6 @@ terraform {
   source = "../../../modules//k8s-resources"
 }
 
-# DEPENDENCY BLOCK: La magia
 dependency "gke" {
   config_path = "../gke-cluster"
   
@@ -24,12 +22,7 @@ dependency "gke" {
     token                  = "mock-token"
   }
 
-  # ESTO ES LO QUE TE FALTA:
-  # Permite usar mocks en el plan
   mock_outputs_allowed_terraform_commands = ["validate", "plan", "plan-all"]
-  
-  # "shallow": Si el output no está en el estado real, usa el del mock.
-  # Sin esto, Terragrunt ve el estado vacío e ignora el mock, causando tu error.
   mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
@@ -47,8 +40,8 @@ EOF
 
 inputs = {
   project_id = "${local.gcp_project_id}"
-  region   = "us-central1"
-  cluster_name = "inteligencia-artificial"
+  region   = "${local.gcp_region}"
+  cluster_name = "IA"
   environment =  "dev"
   
 }

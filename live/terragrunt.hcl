@@ -1,9 +1,6 @@
-# live/terragrunt.hcl
-
 locals {
-  # Leemos la variable de entorno. 
-  # El segundo valor es un "fallback" por si la variable no existe (útil para pruebas locales)
   gcp_project_id = get_env("GOOGLE_PROJECT_ID", "mi-proyecto-local-fallback")
+  gcp_region = get_env("GOOGLE_REGION", "us-central1")
 }
 
 
@@ -18,19 +15,18 @@ remote_state {
     bucket = "backend-terraform15"
     prefix = "${path_relative_to_include()}/terraform.tfstate"
     project = "${local.gcp_project_id}"
-    location = "us-central1"
+    location = "${local.gcp_region}"
   }
 }
 
 
-# Genera el provider de google automáticamente también Google
 generate "provider" {
   path = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents = <<EOF
 provider "google" {
   project = "${local.gcp_project_id}"
-  region  = "us-central1"
+  region  = "${local.gcp_region}"
 }
 EOF
 }

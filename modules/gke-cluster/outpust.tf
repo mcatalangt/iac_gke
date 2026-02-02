@@ -2,13 +2,10 @@ output "endpoint" {
   value = google_container_cluster.gke_cluster.endpoint 
 }
 
-# modules/gke-cluster/outputs.tf
-
 output "host" {
   description = "El endpoint del cluster GKE"
   sensitive   = true
   value       = google_container_cluster.gke_cluster.endpoint 
-  # (Asegúrate que tu recurso se llame google_container_cluster.primary o cambia el nombre aquí)
 }
 
 output "cluster_ca_certificate" {
