@@ -42,9 +42,5 @@ provider "helm" {
     cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
   }
 }
-
-variable "cluster_endpoint" { type = string }
-variable "access_token"     { type = string }
-variable "cluster_ca_certificate" { type = string }
 EOF
 }
