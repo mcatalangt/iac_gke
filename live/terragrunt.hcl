@@ -72,13 +72,13 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
 }
 
-provider "helm" {
-  kubernetes {
-    host                   = "https://$${var.cluster_endpoint}"
-    token                  = var.token
-    cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
-  }
-}
+#provider "helm" {
+#  kubernetes {
+#    host                   = "https://$${var.cluster_endpoint}"
+#    token                  = var.token
+#    cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
+#  }
+#}
 
 # Variables necesarias (Deben llamarse igual que en tus inputs)
 variable "cluster_endpoint"       { type = string }
