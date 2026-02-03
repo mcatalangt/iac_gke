@@ -30,16 +30,16 @@ provider "google" {
 }
 
 provider "kubernetes" {
-  host                   = "https://${var.cluster_endpoint}"
-  token                  = var.access_token
-  cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
+  host                   = "https://${dependency.gke.outputs.host}"
+  token                  = "${dependency.gke.outputs.token}"
+  cluster_ca_certificate = base64decode("${dependency.gke.outputs.cluster_ca_certificate}")
 }
 
 provider "helm" {
   kubernetes {
-    host                   = "https://${var.cluster_endpoint}"
-    token                  = var.access_token
-    cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
+    host                   = "https://${dependency.gke.outputs.host}"
+    token                  = "${dependency.gke.outputs.token}"
+    cluster_ca_certificate = base64decode("${dependency.gke.outputs.cluster_ca_certificate}")
   }
 }
 EOF
