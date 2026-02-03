@@ -57,8 +57,8 @@ jobs:
                 terragrunt --version
 
       - name: Terragrunt Plan
-        run: cd live/dev && terragrunt run-all plan --terragrunt-non-interactive
+        run: cd live/dev && terragrunt run-all plan --terragrunt-non-interactive --terragrunt-source-update
 
       - name: Terragrunt Apply
         if: github.ref == 'refs/heads/main'
-        run: cd live/dev && terragrunt run-all apply --terragrunt-non-interactive --terragrunt-source-update
+        run: cd live/dev && terragrunt run-all apply --terragrunt-non-interactive  --terragrunt-source-update
