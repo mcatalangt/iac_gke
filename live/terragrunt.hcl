@@ -33,14 +33,14 @@ provider "google" {
 # 2. Providers K8s y Helm (Solo si NO es el módulo de cluster)
 ${local.is_gke_cluster ? "# GKE Cluster Module: No K8s providers needed yet" : <<INNER_EOF
 provider "kubernetes" {
-  host                   = "https://${var.cluster_endpoint}"
+  host                   = "https://$${var.cluster_endpoint}"
   token                  = var.access_token
   cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
 }
 
 provider "helm" {
   kubernetes {
-    host                   = "https://${var.cluster_endpoint}"
+    host                   = "https://$${var.cluster_endpoint}"
     token                  = var.access_token
     cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
   }
