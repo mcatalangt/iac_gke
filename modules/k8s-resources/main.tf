@@ -4,18 +4,11 @@ resource "kubernetes_namespace" "api_namespace" {
   }
 }
 
-resource "kubernetes_namespace" "engines_namespace" {
-  metadata {
-    name = "engines"
-  }
-}
-
 resource "kubernetes_namespace" "portals_namespace" {
   metadata {
     name = "portals"
   }
 }
-
 
 resource "kubernetes_namespace" "lakehouse_namespace" {
   metadata {
@@ -23,8 +16,8 @@ resource "kubernetes_namespace" "lakehouse_namespace" {
   }
 }
 
-resource "kubernetes_namespace" "messaging_namespace" {
+resource "kubernetes_namespace" "vectorDB_namespace" {
   metadata {
-    name = "messaging"
+    name = "vectorDB"
   }
 }
