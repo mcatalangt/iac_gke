@@ -24,6 +24,22 @@ generate "providers" {
   path      = "providers_generated.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
+  terraform {
+  required_providers {
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">= 2.10"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.20"
+    }
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 5.0"
+    }
+  }
+}
 
 provider "google" {
   project = "${local.gcp_project_id}"
