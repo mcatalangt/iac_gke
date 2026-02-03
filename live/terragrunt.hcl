@@ -19,13 +19,32 @@ remote_state {
 }
 
 
-generate "provider" {
-  path = "provider.tf"
+generate "providers" {
+  path      = "providers_generated.tf"
   if_exists = "overwrite_terragrunt"
-  contents = <<EOF
+  contents  = <<EOF
+
 provider "google" {
   project = "${local.gcp_project_id}"
   region  = "${local.gcp_region}"
 }
+
+provider "kubernetes" {
+  host                   = "https://${var.cluster_endpoint}"
+  token                  = var.access_token
+  cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
+}
+
+provider "helm" {
+  kubernetes {
+    host                   = "https://${var.cluster_endpoint}"
+    token                  = var.access_token
+    cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
+  }
+}
+
+variable "cluster_endpoint" { type = string }
+variable "access_token"     { type = string }
+variable "cluster_ca_certificate" { type = string }
 EOF
 }
