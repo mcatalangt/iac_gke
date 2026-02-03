@@ -35,4 +35,5 @@ inputs = {
   cluster_endpoint       = dependency.gke.outputs.host
   cluster_ca_certificate = dependency.gke.outputs.token
   access_token           = dependency.gke.outputs.cluster_ca_certificate
+  qdrant_api_key         = "Prueba1234"
 }
