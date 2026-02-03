@@ -38,6 +38,16 @@ jobs:
           find . -name ".terraform.lock.hcl" -type f -delete
           find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
 
+      - name: 🕵️ DEBUG - Listar archivos (Borrar despues)
+        run: |
+          echo "=== CONTENIDO DE MODULES/IA ==="
+          ls -la modules/ia/
+          
+          echo "=== CONTENIDO DE LIVE/DEV/IA ==="
+          ls -la live/dev/ia/
+          
+          echo "=== BUSCANDO ARCHIVOS DE BLOQUEO ==="
+          find . -name ".terraform.lock.hcl"
       - name: Set up Google Cloud Auth (Service Account Key)
         uses: 'google-github-actions/auth@v2'
         with:
