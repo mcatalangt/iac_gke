@@ -25,6 +25,17 @@ generate "providers" {
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
   terraform {
+  extra_arguments "force_upgrade" {
+    commands  = ["init"]
+    arguments = ["-upgrade"]
+  }
+}
+
+generate "versions" {
+  path      = "versions_override.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<EOF
+terraform {
   required_providers {
     helm = {
       source  = "hashicorp/helm"
@@ -39,6 +50,8 @@ generate "providers" {
       version = ">= 5.0"
     }
   }
+}
+EOF
 }
 
 provider "google" {
