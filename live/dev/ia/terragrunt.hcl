@@ -19,17 +19,17 @@ dependency "gke" {
   mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
-generate "provider_k8s" {
-  path      = "provider_k8s.tf"
-  if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-provider "kubernetes" {
-  host                   = "https://${dependency.gke.outputs.host}"
-  token                  = "${dependency.gke.outputs.token}"
-  cluster_ca_certificate = base64decode("${dependency.gke.outputs.cluster_ca_certificate}")
-}
-EOF
-}
+#generate "provider_k8s" {
+#  path      = "provider_k8s.tf"
+#  if_exists = "overwrite_terragrunt"
+#  contents  = <<EOF
+#provider "kubernetes" {
+#  host                   = "https://${dependency.gke.outputs.host}"
+#  token                  = "${dependency.gke.outputs.token}"
+#  cluster_ca_certificate = base64decode("${dependency.gke.outputs.cluster_ca_certificate}")
+#}
+#EOF
+#}
 
 inputs = {
   cluster_endpoint       = dependency.gke.outputs.host
