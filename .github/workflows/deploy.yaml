@@ -25,6 +25,7 @@ jobs:
       id-token: 'write'
 
     env:
+      TARGET_ENV: ${{ inputs.environment || 'dev' }}
       GOOGLE_PROJECT_ID: ${{ vars.GCP_PROJECT }}
       GOOGLE_REGION: ${{ vars.GCP_REGION }}
 
