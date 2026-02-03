@@ -61,4 +61,4 @@ jobs:
 
       - name: Terragrunt Apply
         if: github.ref == 'refs/heads/main'
-        run: cd live/dev && terragrunt run-all apply --terragrunt-non-interactive
+        run: cd live/dev && terragrunt run-all apply --terragrunt-non-interactive --terragrunt-source-update
