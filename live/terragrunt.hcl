@@ -21,7 +21,7 @@ remote_state {
 }
 
 generate "providers" {
-  path      = "providers_generated.tf"
+  path      = "providers.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
   terraform {
