@@ -4,22 +4,23 @@ resource "helm_release" "qdrant" {
   chart            = "qdrant"
   namespace        = "database"
   create_namespace = true
-  set {
-    name  = "replicaCount"
-    value = "1" 
+  values = [
+      yamlencode({
+        replicaCount = 1
+        
+        apiKey = var.qdrant_api_key
+        
+        persistence = {
+          enabled          = true
+          size             = "10Gi"
+          storageClassName = "premium-rwo" # O el que estés usando
         }
-  set {
-        name  = "persistence.enabled"
-        value = "true"
-    }
-  set {
-    name  = "persistence.storageClassName"
-    value = "standard-rwo"
-  }
-  set {
-    name  = "service.type"
-    value = "LoadBalancer" 
-  }
+
+        service = {
+          type = "ClusterIP"
+        }
+      })
+    ]
 
   
 }
