@@ -16,8 +16,8 @@ resource "kubernetes_namespace" "lakehouse_namespace" {
   }
 }
 
-resource "kubernetes_namespace" "vectorDB_namespace" {
+resource "kubernetes_namespace" "vectordb_namespace" {
   metadata {
-    name = "vectorDB"
+    name = "vectordb"
   }
 }
