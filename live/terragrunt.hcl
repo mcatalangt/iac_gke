@@ -20,34 +20,37 @@ remote_state {
   }
 }
 
-
 generate "providers" {
   path      = "providers_generated.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-
+# 1. Provider Google (Todos lo necesitan)
 provider "google" {
   project = "${local.gcp_project_id}"
   region  = "${local.gcp_region}"
 }
 
-contents  = local.is_gke_cluster ? "# No providers needed for GKE module" : <<EOF
+# 2. Providers K8s y Helm (Solo si NO es el módulo de cluster)
+${local.is_gke_cluster ? "# GKE Cluster Module: No K8s providers needed yet" : <<INNER_EOF
 provider "kubernetes" {
-  host                   = "https://${dependency.gke.outputs.host}"
-  token                  = "${dependency.gke.outputs.token}"
-  cluster_ca_certificate = base64decode("${dependency.gke.outputs.cluster_ca_certificate}")
+  host                   = "https://${var.cluster_endpoint}"
+  token                  = var.access_token
+  cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
 }
 
 provider "helm" {
   kubernetes {
-    host                   = "https://${dependency.gke.outputs.host}"
-    token                  = "${dependency.gke.outputs.token}"
-    cluster_ca_certificate = base64decode("${dependency.gke.outputs.cluster_ca_certificate}")
+    host                   = "https://${var.cluster_endpoint}"
+    token                  = var.access_token
+    cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
   }
 }
-variable "cluster_endpoint" { type = string }
-variable "access_token"     { type = string }
-variable "cluster_ca_certificate" { type = string }
 
+# Definimos las variables que Terraform esperará recibir de Terragrunt
+variable "cluster_endpoint"       { type = string }
+variable "access_token"           { type = string }
+variable "cluster_ca_certificate" { type = string }
+INNER_EOF
+}
 EOF
 }
