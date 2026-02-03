@@ -7,13 +7,14 @@ include "root" {
 }
 
 dependency "gke" {
-  config_path = "../gke-cluster"
+  config_path = "../k8s-resources"
 
   mock_outputs = {
-    endpoint = "1.1.1.1"
-    ca_certificate = "bW9jaw=="
-    access_token = "mock-token"
+    host                   = "https://1.2.3.4"
+    cluster_ca_certificate = "dGVzdA=="
+    token                  = "mock-token"
   }
+
   mock_outputs_allowed_terraform_commands = ["validate", "plan", "plan-all"]
   mock_outputs_merge_strategy_with_state  = "shallow"
 }
@@ -31,7 +32,7 @@ EOF
 }
 
 inputs = {
-  cluster_endpoint       = dependency.gke.outputs.endpoint
-  cluster_ca_certificate = dependency.gke.outputs.ca_certificate
-  access_token           = dependency.gke.outputs.access_token
+  cluster_endpoint       = dependency.gke.outputs.host
+  cluster_ca_certificate = dependency.gke.outputs.token
+  access_token           = dependency.gke.outputs.cluster_ca_certificate
 }
