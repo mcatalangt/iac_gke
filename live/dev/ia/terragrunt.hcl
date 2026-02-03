@@ -7,7 +7,7 @@ include "root" {
 }
 
 dependency "gke" {
-  config_path = "../k8s-resources"
+  config_path = "../gke-cluster"
   skip_outputs = true
 
   mock_outputs = {
