@@ -33,6 +33,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Nuke Terraform Lock Files
+        run: |
+          find . -name ".terraform.lock.hcl" -type f -delete
+          find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+
       - name: Set up Google Cloud Auth (Service Account Key)
         uses: 'google-github-actions/auth@v2'
         with:

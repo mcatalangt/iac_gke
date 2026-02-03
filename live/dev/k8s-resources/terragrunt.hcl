@@ -44,6 +44,6 @@ inputs = {
   environment =  "dev"
   cluster_endpoint       = dependency.gke.outputs.host
   cluster_ca_certificate = dependency.gke.outputs.cluster_ca_certificate
-  access_token           = dependency.gke.outputs.token
+  token                  = dependency.gke.outputs.token
   
 }
