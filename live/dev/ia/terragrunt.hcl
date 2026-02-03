@@ -8,6 +8,7 @@ include "root" {
 
 dependency "gke" {
   config_path = "../k8s-resources"
+  skip_outputs = true
 
   mock_outputs = {
     host                   = "https://1.2.3.4"
