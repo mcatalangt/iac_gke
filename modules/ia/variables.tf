@@ -3,3 +3,15 @@ variable "qdrant_api_key" {
   type        = string
   sensitive   = true 
 }
+variable "cluster_endpoint" {
+  type = string
+}
+
+variable "token" {
+  type      = string
+  sensitive = true
+}
+
+variable "cluster_ca_certificate" {
+  type = string
+}
