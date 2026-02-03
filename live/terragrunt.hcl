@@ -68,21 +68,21 @@ provider "google" {
 ${local.is_gke_cluster ? "# GKE Cluster: No providers needed" : <<INNER
 provider "kubernetes" {
   host                   = "https://$${var.cluster_endpoint}"
-  token                  = var.access_token
+  token                  = var.token
   cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
 }
 
 provider "helm" {
   kubernetes {
     host                   = "https://$${var.cluster_endpoint}"
-    token                  = var.access_token
+    token                  = var.token
     cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
   }
 }
 
 # Variables necesarias (Deben llamarse igual que en tus inputs)
 variable "cluster_endpoint"       { type = string }
-variable "access_token"           { type = string }
+variable "token"           { type = string }
 variable "cluster_ca_certificate" { type = string }
 INNER
 }
