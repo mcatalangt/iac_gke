@@ -46,6 +46,7 @@ provider "helm" {
   }
 }
 
+
 # Definimos las variables que Terraform esperará recibir de Terragrunt
 variable "cluster_endpoint"       { type = string }
 variable "access_token"           { type = string }
