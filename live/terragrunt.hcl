@@ -30,32 +30,10 @@ generate "providers" {
   path      = "providers_v2.tf"
   if_exists = "overwrite_terragrunt"
   
-  contents  = <<EOF
+  contents  = <<-EOF
 provider "google" {
   project = "${local.gcp_project_id}"
   region  = "${local.gcp_region}"
 }
-
-#${local.is_gke_cluster ? "# GKE Cluster: No providers needed" : <<INNER
-#provider "kubernetes" {
-#  host                   = "https://$${var.cluster_endpoint}"
-#  token                  = var.token
-#  cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
-#}
-
-#provider "helm" {
-#  kubernetes {
-#    host                   = "https://$${var.cluster_endpoint}"
-#    token                  = var.token
-#    cluster_ca_certificate = base64decode(var.cluster_ca_certificate)
-#  }
-#}
-
-# Variables necesarias (Deben llamarse igual que en tus inputs)
-#variable "cluster_endpoint"       { type = string }
-#variable "token"           { type = string }
-#variable "cluster_ca_certificate" { type = string }
-#INNER
-#}
 EOF
 }
