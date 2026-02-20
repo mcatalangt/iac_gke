@@ -15,3 +15,7 @@ variable "token" {
 variable "cluster_ca_certificate" {
   type = string
 }
+
+variable "host" {
+  type = string
+}
