@@ -30,8 +30,8 @@ inputs = {
   region   = "${local.gcp_region}"
   cluster_name = "ia"
   environment =  "dev"
-  cluster_endpoint       = dependency.gke.outputs.cluster_endpoint
-  cluster_ca_certificate = dependency.gke.outputs.cluster_ca_certificate
-  token                  = dependency.gke.outputs.token
+  #cluster_endpoint       = dependency.gke.outputs.cluster_endpoint
+  #cluster_ca_certificate = dependency.gke.outputs.cluster_ca_certificate
+  #token                  = dependency.gke.outputs.token
 
 }
