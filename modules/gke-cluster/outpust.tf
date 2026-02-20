@@ -2,7 +2,9 @@ output "endpoint" {
   value = google_container_cluster.gke_cluster.endpoint 
 }
 
-output "host" {
+```hcl
+output "cluster_endpoint" {
+```
   description = "El endpoint del cluster GKE"
   sensitive   = true
   value       = google_container_cluster.gke_cluster.endpoint 
