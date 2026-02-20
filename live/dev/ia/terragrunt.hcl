@@ -10,7 +10,7 @@ dependency "gke" {
   config_path = "../gke-cluster"
 
   mock_outputs = {
-    host                   = "https://1.2.3.4"
+    cluster_endpoint       = "https://1.2.3.4"
     cluster_ca_certificate = "dGVzdA=="
     token                  = "mock-token"
   }
