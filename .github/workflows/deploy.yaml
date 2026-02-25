@@ -12,6 +12,17 @@ on:
           - dev
           - staging
           - prod
+      deploy_RAG_stack:
+        description: 'Desplegar Stack de RAG'
+        required: true
+        type: boolean
+        default: false
+      deploy_MCP_stack:
+        description: 'Desplegar Stack de MCP'
+        required: true
+        type: boolean
+        default: false
+
 
   push:
     branches: [ "main" ]
