@@ -16,13 +16,27 @@ on:
         description: 'Desplegar Stack de RAG'
         required: true
         type: boolean
-        default: false
+        default: true
       deploy_MCP_stack:
         description: 'Desplegar Stack de MCP'
         required: true
         type: boolean
         default: false
-
+      deploy_SubAgents_stack:
+        description: 'Desplegar Stack de SubAgents'
+        required: true
+        type: boolean
+        default: false
+      deploy_A2A_stack:
+        description: 'Desplegar Stack de A2A'
+        required: true
+        type: boolean
+        default: false
+      deploy_Observability_stack:
+        description: 'Desplegar Stack de Observability'
+        required: true
+        type: boolean
+        default: false
 
   push:
     branches: [ "main" ]
