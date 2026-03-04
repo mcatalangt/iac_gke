@@ -22,7 +22,7 @@ resource "kubernetes_namespace_v1" "llms_namespace" {
   }
 }
 
-resource "kubernetes_namespace_v1" "llms_namespace" {
+resource "kubernetes_namespace_v1" "observability_namespace" {
   metadata {
     name = "observability"
   }
