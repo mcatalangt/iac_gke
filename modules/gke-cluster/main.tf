@@ -15,13 +15,13 @@ resource "google_container_cluster" "gke_cluster" {
   subnetwork = "default"
 
 
-  # Para un clúster privado 
-  #  master_authorized_networks_config {
-  #    cidr_blocks {
-  #      cidr_block   = "0.0.0.0/0"
-  #      display_name = "All"
-  #    }
-  #  }
+  # Autorizar acceso al clúster (Ej: GitHub Actions o internet en un clúster de prueba)
+  master_authorized_networks_config {
+    cidr_blocks {
+      cidr_block   = "0.0.0.0/0"
+      display_name = "All"
+    }
+  }
 
   # Deshabilitar el node pool por defecto para gestionarlo por separado
   remove_default_node_pool = true

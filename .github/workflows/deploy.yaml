@@ -32,6 +32,11 @@ on:
         required: true
         type: boolean
         default: false
+      deploy_Data_stack:
+        description: 'Desplegar Stack de Data'
+        required: true
+        type: boolean
+        default: false
       deploy_Observability_stack:
         description: 'Desplegar Stack de Observability'
         required: true
