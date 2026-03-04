@@ -6,7 +6,7 @@ resource "kubernetes_namespace_v1" "api_namespace" {
 
 resource "kubernetes_namespace_v1" "portals_namespace" {
   metadata {
-    name = "portals"
+    name = "webpages"
   }
 }
 
@@ -19,5 +19,11 @@ resource "kubernetes_namespace_v1" "lakehouse_namespace" {
 resource "kubernetes_namespace_v1" "llms_namespace" {
   metadata {
     name = "llms"
+  }
+}
+
+resource "kubernetes_namespace_v1" "llms_namespace" {
+  metadata {
+    name = "observability"
   }
 }
