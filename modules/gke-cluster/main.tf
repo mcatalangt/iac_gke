@@ -27,9 +27,9 @@ resource "google_container_cluster" "gke_cluster" {
   remove_default_node_pool = true
 }
 
-# Recurso: Node Pool 
+# Recurso: Node Pool 1
 resource "google_container_node_pool" "primary_nodes" {
-  name     = "${var.environment}-${var.cluster_name}-nodes"
+  name     = "${var.environment}-${var.cluster_name}-nodes-4"
   location = var.region
   cluster  = google_container_cluster.gke_cluster.name
 
@@ -38,6 +38,29 @@ resource "google_container_node_pool" "primary_nodes" {
   node_config {
     machine_type = "e2-standard-4"
     disk_size_gb = 20
+
+    labels = {
+      carga = "general"
+    }
+  }
+}
+
+# Recurso: Node Pool 2
+resource "google_container_node_pool" "secondary_nodes" {
+  name     = "${var.environment}-${var.cluster_name}-nodes-8"
+  location = var.region
+  cluster  = google_container_cluster.gke_cluster.name
+
+  node_count = 1
+
+  node_config {
+    machine_type = "e2-standard-8"
+    disk_size_gb = 100
+    disk_type    = "pd-ssd"
+
+    labels = {
+      carga = "inteligencia-artificial"
+    }
   }
 }
 

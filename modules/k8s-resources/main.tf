@@ -27,3 +27,9 @@ resource "kubernetes_namespace_v1" "observability_namespace" {
     name = "observability"
   }
 }
+
+resource "kubernetes_namespace_v1" "engines_namespace" {
+  metadata {
+    name = "engines"
+  }
+}
