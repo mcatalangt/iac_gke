@@ -53,6 +53,9 @@ resource "google_container_node_pool" "secondary_nodes" {
 
   node_count = 1
 
+  # Restrict to a specific zone because GPUs are not available in all zones in a region
+  node_locations = ["${var.region}-a"]
+
   node_config {
     machine_type = "n1-standard-4"
     disk_size_gb = 50
@@ -60,6 +63,12 @@ resource "google_container_node_pool" "secondary_nodes" {
 
     # Enable Spot/Preemptible instances to dramatically reduce costs
     spot = true
+
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/devstorage.read_only",
+    ]
 
     # Attach 1x NVIDIA Tesla T4 GPU
     guest_accelerator {
