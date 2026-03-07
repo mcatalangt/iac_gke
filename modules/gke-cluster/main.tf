@@ -45,18 +45,30 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-# Recurso: Node Pool 2
+# Recurso: Node Pool 2 (GPU Spot)
 resource "google_container_node_pool" "secondary_nodes" {
-  name     = "${var.environment}-${var.cluster_name}-nodes-8"
+  name     = "${var.environment}-${var.cluster_name}-gpu-nodes"
   location = var.region
   cluster  = google_container_cluster.gke_cluster.name
 
   node_count = 1
 
   node_config {
-    machine_type = "e2-standard-8"
-    disk_size_gb = 100
+    machine_type = "n1-standard-4"
+    disk_size_gb = 50
     disk_type    = "pd-ssd"
+
+    # Enable Spot/Preemptible instances to dramatically reduce costs
+    spot = true
+
+    # Attach 1x NVIDIA Tesla T4 GPU
+    guest_accelerator {
+      type  = "nvidia-tesla-t4"
+      count = 1
+      gpu_driver_installation_config {
+        gpu_driver_version = "LATEST"
+      }
+    }
 
     labels = {
       carga = "inteligencia-artificial"
