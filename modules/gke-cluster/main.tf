@@ -54,7 +54,7 @@ resource "google_container_node_pool" "secondary_nodes" {
   node_count = 1
 
   # Restrict to a specific zone because GPUs are not available in all zones in a region
-  node_locations = ["${var.region}-a"]
+  node_locations = ["${var.region}"]
 
   node_config {
     machine_type = "n1-standard-4"
