@@ -1,6 +1,5 @@
 # Repository setup
 resource "helm_release" "grafana" {
-  count            = var.deploy_observability_stack ? 1 : 0
   name             = "grafana"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "grafana"
@@ -14,7 +13,6 @@ resource "helm_release" "grafana" {
 }
 
 resource "helm_release" "loki" {
-  count            = var.deploy_observability_stack ? 1 : 0
   name             = "loki"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "loki"
@@ -36,7 +34,6 @@ resource "helm_release" "loki" {
 }
 
 resource "helm_release" "tempo" {
-  count            = var.deploy_observability_stack ? 1 : 0
   name             = "tempo"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "tempo"
@@ -45,7 +42,6 @@ resource "helm_release" "tempo" {
 }
 
 resource "helm_release" "mimir" {
-  count            = var.deploy_observability_stack ? 1 : 0
   name             = "mimir"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "mimir-distributed"

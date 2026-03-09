@@ -13,8 +13,3 @@ variable "token" {
   type        = string
 }
 
-variable "deploy_observability_stack" {
-  description = "Boolean switch to deploy the Observability Stack (Grafana, Loki, Tempo, Mimir, etc.)"
-  type        = bool
-  default     = false
-}
