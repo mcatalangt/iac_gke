@@ -24,6 +24,23 @@ resource "helm_release" "loki" {
     value = "SingleBinary"
   }
   set {
+    name  = "singleBinary.replicas"
+    value = "1"
+  }
+  # Disable scalable targets explicitly
+  set {
+    name  = "read.replicas"
+    value = "0"
+  }
+  set {
+    name  = "write.replicas"
+    value = "0"
+  }
+  set {
+    name  = "backend.replicas"
+    value = "0"
+  }
+  set {
     name  = "loki.auth_enabled"
     value = "false"
   }
@@ -34,10 +51,6 @@ resource "helm_release" "loki" {
   set {
     name  = "loki.storage.type"
     value = "filesystem"
-  }
-  set {
-    name  = "singleBinary.replicas"
-    value = "1"
   }
 }
 
