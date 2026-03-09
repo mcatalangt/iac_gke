@@ -20,6 +20,10 @@ resource "helm_release" "loki" {
   create_namespace = true
 
   set {
+    name  = "deploymentMode"
+    value = "SingleBinary"
+  }
+  set {
     name  = "loki.auth_enabled"
     value = "false"
   }
@@ -29,7 +33,11 @@ resource "helm_release" "loki" {
   }
   set {
     name  = "loki.storage.type"
-    value = "filesystem" # Idealmente usar GCS en producción
+    value = "filesystem"
+  }
+  set {
+    name  = "singleBinary.replicas"
+    value = "1"
   }
 }
 

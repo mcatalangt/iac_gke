@@ -2,6 +2,8 @@ terraform {
   source = "../../../modules/ia"
 }
 
+skip = get_env("TF_VAR_deploy_rag_stack", "false") == "false"
+
 include "root" {
   path = find_in_parent_folders()
 }
