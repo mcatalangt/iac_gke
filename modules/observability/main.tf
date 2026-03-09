@@ -86,11 +86,18 @@ resource "helm_release" "oncall" {
   namespace        = "observability"
   create_namespace = true
 
-  # Default subcharts (RabbitMQ, Redis, MariaDB) are enabled by default in the chart for dev environments
-  # Override the Redis image tag because the default one in the chart is no longer on Docker Hub
+  # Override the image tags because the default ones in the chart are no longer on Docker Hub (Bitnami pruning)
   set {
     name  = "redis.image.tag"
     value = "6.2.14-debian-11-r89"
+  }
+  set {
+    name  = "rabbitmq.image.tag"
+    value = "3.12.13-debian-11-r0"
+  }
+  set {
+    name  = "mariadb.image.tag"
+    value = "10.11.8-debian-11-r0"
   }
 }
 
