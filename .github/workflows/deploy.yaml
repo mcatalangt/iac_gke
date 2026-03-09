@@ -58,12 +58,12 @@ jobs:
       TARGET_ENV: ${{ inputs.environment || 'dev' }}
       GOOGLE_PROJECT_ID: ${{ vars.GCP_PROJECT }}
       GOOGLE_REGION: ${{ vars.GCP_REGION }}
-      TF_VAR_deploy_rag_stack: ${{ inputs.deploy_RAG_stack }}
-      TF_VAR_deploy_mcp_stack: ${{ inputs.deploy_MCP_stack }}
-      TF_VAR_deploy_subagents_stack: ${{ inputs.deploy_SubAgents_stack }}
-      TF_VAR_deploy_a2a_stack: ${{ inputs.deploy_A2A_stack }}
-      TF_VAR_deploy_data_stack: ${{ inputs.deploy_Data_stack }}
-      TF_VAR_deploy_observability_stack: ${{ inputs.deploy_Observability_stack }}
+      TF_VAR_deploy_rag_stack: "${{ inputs.deploy_RAG_stack }}"
+      TF_VAR_deploy_mcp_stack: "${{ inputs.deploy_MCP_stack }}"
+      TF_VAR_deploy_subagents_stack: "${{ inputs.deploy_SubAgents_stack }}"
+      TF_VAR_deploy_a2a_stack: "${{ inputs.deploy_A2A_stack }}"
+      TF_VAR_deploy_data_stack: "${{ inputs.deploy_Data_stack }}"
+      TF_VAR_deploy_observability_stack: "${{ inputs.deploy_Observability_stack }}"
 
     steps:
       - name: Checkout Repository
