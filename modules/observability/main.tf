@@ -87,6 +87,11 @@ resource "helm_release" "oncall" {
   create_namespace = true
 
   # Default subcharts (RabbitMQ, Redis, MariaDB) are enabled by default in the chart for dev environments
+  # Override the Redis image tag because the default one in the chart is no longer on Docker Hub
+  set {
+    name  = "redis.image.tag"
+    value = "6.2.14-debian-11-r89"
+  }
 }
 
 resource "helm_release" "pyroscope" {
