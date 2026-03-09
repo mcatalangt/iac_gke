@@ -78,3 +78,58 @@ resource "helm_release" "mimir" {
     value = "false"
   }
 }
+
+resource "helm_release" "oncall" {
+  name             = "oncall"
+  repository       = "https://grafana.github.io/helm-charts"
+  chart            = "oncall"
+  namespace        = "observability"
+  create_namespace = true
+
+  # Default subcharts (RabbitMQ, Redis, MariaDB) are enabled by default in the chart for dev environments
+}
+
+resource "helm_release" "pyroscope" {
+  name             = "pyroscope"
+  repository       = "https://grafana.github.io/helm-charts"
+  chart            = "pyroscope"
+  namespace        = "observability"
+  create_namespace = true
+}
+
+resource "helm_release" "alloy" {
+  name             = "alloy"
+  repository       = "https://grafana.github.io/helm-charts"
+  chart            = "alloy"
+  namespace        = "observability"
+  create_namespace = true
+
+  values = [
+    yamlencode({
+      alloy = {
+        configMap = {
+          content = <<-EOT
+            faro.receiver "default" {
+              external_labels = {
+                app = "frontend",
+              }
+              server {
+                listen_address = "0.0.0.0"
+                listen_port = 12347
+              }
+              output {
+                logs = [loki.write.default.receiver]
+              }
+            }
+
+            loki.write "default" {
+              endpoint {
+                url = "http://loki.observability.svc.cluster.local:3100/loki/api/v1/push"
+              }
+            }
+          EOT
+        }
+      }
+    })
+  ]
+}
