@@ -47,6 +47,7 @@ resource "google_container_node_pool" "primary_nodes" {
 
 # Recurso: Node Pool 2 (GPU Spot)
 resource "google_container_node_pool" "secondary_nodes" {
+  count    = var.deploy_rag_stack ? 1 : 0
   name     = "${var.environment}-${var.cluster_name}-gpu-nodes"
   location = var.region
   cluster  = google_container_cluster.gke_cluster.name

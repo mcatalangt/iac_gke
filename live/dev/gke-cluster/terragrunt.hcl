@@ -17,4 +17,5 @@ inputs = {
   region   = "${local.gcp_region}"
   cluster_name = "ia"
   environment =  "dev"
+  deploy_rag_stack = get_env("TF_VAR_deploy_rag_stack", "false") == "true"
 }

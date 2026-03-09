@@ -10,6 +10,11 @@ resource "helm_release" "grafana" {
     name  = "adminPassword"
     value = "admin" # TODO: En producción, usar Secret Manager o al menos una variable fuerte.
   }
+
+  set {
+    name  = "service.type"
+    value = "LoadBalancer"
+  }
 }
 
 resource "helm_release" "loki" {
@@ -19,39 +24,32 @@ resource "helm_release" "loki" {
   namespace        = "observability"
   create_namespace = true
 
-  set {
-    name  = "deploymentMode"
-    value = "SingleBinary"
-  }
-  set {
-    name  = "singleBinary.replicas"
-    value = "1"
-  }
-  # Disable scalable targets explicitly
-  set {
-    name  = "read.replicas"
-    value = "0"
-  }
-  set {
-    name  = "write.replicas"
-    value = "0"
-  }
-  set {
-    name  = "backend.replicas"
-    value = "0"
-  }
-  set {
-    name  = "loki.auth_enabled"
-    value = "false"
-  }
-  set {
-    name  = "loki.commonConfig.replication_factor"
-    value = "1"
-  }
-  set {
-    name  = "loki.storage.type"
-    value = "filesystem"
-  }
+  values = [
+    yamlencode({
+      deploymentMode = "SingleBinary"
+      loki = {
+        auth_enabled = false
+        commonConfig = {
+          replication_factor = 1
+        }
+        storage = {
+          type = "filesystem"
+        }
+      }
+      singleBinary = {
+        replicas = 1
+      }
+      read = {
+        replicas = 0
+      }
+      write = {
+        replicas = 0
+      }
+      backend = {
+        replicas = 0
+      }
+    })
+  ]
 }
 
 resource "helm_release" "tempo" {
