@@ -35,6 +35,7 @@ resource "helm_release" "loki" {
         storage = {
           type = "filesystem"
         }
+        useTestSchema = true
       }
       singleBinary = {
         replicas = 1
