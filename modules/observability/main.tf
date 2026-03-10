@@ -89,15 +89,15 @@ resource "helm_release" "oncall" {
   # Override the image tags because the default ones in the chart are no longer on Docker Hub (Bitnami pruning)
   set {
     name  = "redis.image.tag"
-    value = "6.2.14-debian-11-r89"
+    value = "latest"
   }
   set {
     name  = "rabbitmq.image.tag"
-    value = "3.12.13-debian-11-r0"
+    value = "latest"
   }
   set {
     name  = "mariadb.image.tag"
-    value = "10.11.8-debian-11-r0"
+    value = "latest"
   }
 }
 
