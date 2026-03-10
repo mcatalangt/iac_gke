@@ -2,7 +2,7 @@ terraform {
   source = "../../../modules/observability"
 }
 
-skip = get_env("TF_VAR_deploy_observability_stack", "false") == "false"
+skip = get_env("TF_VAR_deploy_observability_stack", "false") != "true"
 
 include "root" {
   path = find_in_parent_folders()
