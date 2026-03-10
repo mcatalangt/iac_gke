@@ -15,6 +15,43 @@ resource "helm_release" "grafana" {
     name  = "service.type"
     value = "LoadBalancer"
   }
+
+  values = [
+    yamlencode({
+      datasources = {
+        "datasources.yaml" = {
+          apiVersion = 1
+          datasources = [
+            {
+              name      = "Loki"
+              type      = "loki"
+              access    = "proxy"
+              url       = "http://loki.observability.svc.cluster.local:3100"
+              isDefault = true
+            },
+            {
+              name   = "Tempo"
+              type   = "tempo"
+              access = "proxy"
+              url    = "http://tempo.observability.svc.cluster.local:3100"
+            },
+            {
+              name   = "Mimir"
+              type   = "prometheus"
+              access = "proxy"
+              url    = "http://mimir-mimir-distributed-query-frontend.observability.svc.cluster.local:8080/prometheus"
+            },
+            {
+              name   = "Pyroscope"
+              type   = "grafana-pyroscope-datasource"
+              access = "proxy"
+              url    = "http://pyroscope.observability.svc.cluster.local:4040"
+            }
+          ]
+        }
+      }
+    })
+  ]
 }
 
 resource "helm_release" "loki" {
