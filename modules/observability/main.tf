@@ -33,13 +33,13 @@ resource "helm_release" "grafana" {
               name   = "Tempo"
               type   = "tempo"
               access = "proxy"
-              url    = "http://tempo.observability.svc.cluster.local:3100"
+              url    = "http://tempo.observability.svc.cluster.local:3200"
             },
             {
               name   = "Mimir"
               type   = "prometheus"
               access = "proxy"
-              url    = "http://mimir-mimir-distributed-query-frontend.observability.svc.cluster.local:8080/prometheus"
+              url    = "http://mimir-query-frontend.observability.svc.cluster.local:8080/prometheus"
             },
             {
               name   = "Pyroscope"

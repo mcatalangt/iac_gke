@@ -16,7 +16,7 @@ on:
         description: 'Desplegar Stack de RAG'
         required: true
         type: boolean
-        default: true
+        default: false
       deploy_MCP_stack:
         description: 'Desplegar Stack de MCP'
         required: true
@@ -41,7 +41,7 @@ on:
         description: 'Desplegar Stack de Observability'
         required: true
         type: boolean
-        default: false
+        default: true
 
   push:
     branches: [ "main" ]
