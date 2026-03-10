@@ -34,6 +34,11 @@ resource "helm_release" "grafana" {
               type   = "tempo"
               access = "proxy"
               url    = "http://tempo.observability.svc.cluster.local:3200"
+              jsonData = {
+                nodeGraph = {
+                  enabled = true
+                }
+              }
             },
             {
               name   = "Mimir"
