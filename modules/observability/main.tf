@@ -92,8 +92,16 @@ resource "helm_release" "oncall" {
     value = "latest"
   }
   set {
+    name  = "rabbitmq.image.registry"
+    value = "docker.io"
+  }
+  set {
+    name  = "rabbitmq.image.repository"
+    value = "rabbitmq"
+  }
+  set {
     name  = "rabbitmq.image.tag"
-    value = "latest"
+    value = "3.12-management-alpine"
   }
   set {
     name  = "mariadb.image.tag"
@@ -122,7 +130,7 @@ resource "helm_release" "alloy" {
         configMap = {
           content = <<-EOT
             faro.receiver "default" {
-              external_labels = {
+              extra_log_labels = {
                 app = "frontend",
               }
               server {
