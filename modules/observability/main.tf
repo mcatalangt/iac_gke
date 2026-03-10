@@ -101,7 +101,7 @@ resource "helm_release" "oncall" {
   }
   set {
     name  = "rabbitmq.image.tag"
-    value = "3.12-management-alpine"
+    value = "3.12-management"
   }
   set {
     name  = "mariadb.image.tag"
