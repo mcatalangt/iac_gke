@@ -86,26 +86,34 @@ resource "helm_release" "oncall" {
   namespace        = "observability"
   create_namespace = true
 
-  # Override the image tags because the default ones in the chart are no longer on Docker Hub (Bitnami pruning)
+  # Override registries to use AWS Public ECR since Bitnami prunes older tags from Docker Hub.
+  set {
+    name  = "redis.image.registry"
+    value = "public.ecr.aws"
+  }
   set {
     name  = "redis.image.tag"
-    value = "latest"
+    value = "6.2-debian-11"
   }
   set {
     name  = "rabbitmq.image.registry"
-    value = "docker.io"
+    value = "public.ecr.aws"
   }
   set {
     name  = "rabbitmq.image.repository"
-    value = "rabbitmq"
+    value = "bitnami/rabbitmq"
   }
   set {
     name  = "rabbitmq.image.tag"
-    value = "3.12-management"
+    value = "3.12-debian-11"
+  }
+  set {
+    name  = "mariadb.image.registry"
+    value = "public.ecr.aws"
   }
   set {
     name  = "mariadb.image.tag"
-    value = "latest"
+    value = "10.11-debian-11"
   }
 }
 
