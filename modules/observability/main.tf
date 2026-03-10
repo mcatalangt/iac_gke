@@ -38,6 +38,9 @@ resource "helm_release" "grafana" {
                 nodeGraph = {
                   enabled = true
                 }
+                serviceMap = {
+                  datasourceUid = "Mimir"
+                }
               }
             },
             {
