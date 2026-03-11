@@ -29,6 +29,7 @@ resource "helm_release" "grafana" {
           datasources = [
             {
               name      = "Loki"
+              uid       = "Loki"
               type      = "loki"
               access    = "proxy"
               url       = "http://loki.observability.svc.cluster.local:3100"
@@ -46,6 +47,31 @@ resource "helm_release" "grafana" {
                 serviceMap = {
                   datasourceUid = "Mimir"
                 }
+                search = {
+                  hide = false
+                }
+                serviceGraph = {
+                  enabled       = true
+                  datasourceUid = "Mimir"
+                  query = {
+                    requestTotal           = "traces_service_graph_request_total"
+                    requestFailedTotal     = "traces_service_graph_request_failed_total"
+                    requestDurationSeconds = "traces_service_graph_request_server_seconds"
+                  }
+                }
+                tracesToLogs = {
+                  datasourceUid   = "Loki"
+                  tags            = ["target", "cluster", "namespace", "pod", "container"]
+                  filterByTraceID = true
+                }
+                tracesToMetrics = {
+                  datasourceUid = "Mimir"
+                  tags          = [{ key = "service.name", value = "service" }]
+                }
+                tracesToProfiles = {
+                  datasourceUid = "Pyroscope"
+                  tags          = [{ key = "service.name", value = "service" }]
+                }
               }
             },
             {
@@ -57,6 +83,7 @@ resource "helm_release" "grafana" {
             },
             {
               name   = "Pyroscope"
+              uid    = "Pyroscope"
               type   = "grafana-pyroscope-datasource"
               access = "proxy"
               url    = "http://pyroscope.observability.svc.cluster.local:4040"
