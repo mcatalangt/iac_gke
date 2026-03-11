@@ -144,26 +144,22 @@ resource "helm_release" "tempo" {
         metricsGenerator = {
           enabled        = true
           remoteWriteUrl = "http://mimir-distributor.observability.svc.cluster.local:8080/api/v1/push"
+          config = {
+            metrics_generator = {
+              registry = {
+                collection_interval = "15s"
+                labels = {
+                  cluster = "dev"
+                }
+              }
+              processors = ["service-graphs", "span-metrics"]
+            }
+          }
         }
       }
       queryFrontend = {
         query = {
           enabled = true
-        }
-      }
-      metricsGenerator = {
-        enabled        = true
-        remoteWriteUrl = "http://mimir-distributor.observability.svc.cluster.local:8080/api/v1/push"
-        config = {
-          metrics_generator = {
-            registry = {
-              collection_interval = "15s"
-              labels = {
-                cluster = "dev"
-              }
-            }
-            processors = ["service-graphs", "span-metrics"]
-          }
         }
       }
     })
