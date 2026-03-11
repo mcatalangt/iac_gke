@@ -104,6 +104,17 @@ resource "helm_release" "tempo" {
   chart            = "tempo"
   namespace        = "observability"
   create_namespace = true
+
+  values = [
+    yamlencode({
+      tempo = {
+        metricsGenerator = {
+          enabled        = true
+          remoteWriteUrl = "http://mimir-distributor.observability.svc.cluster.local:8080/api/v1/push"
+        }
+      }
+    })
+  ]
 }
 
 resource "helm_release" "mimir" {
