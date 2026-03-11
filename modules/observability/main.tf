@@ -180,6 +180,26 @@ resource "helm_release" "alloy" {
   values = [
     yamlencode({
       alloy = {
+        extraPorts = [
+          {
+            name       = "faro"
+            port       = 12347
+            targetPort = 12347
+            protocol   = "TCP"
+          },
+          {
+            name       = "otlp-grpc"
+            port       = 4317
+            targetPort = 4317
+            protocol   = "TCP"
+          },
+          {
+            name       = "otlp-http"
+            port       = 4318
+            targetPort = 4318
+            protocol   = "TCP"
+          }
+        ]
         configMap = {
           content = <<-EOT
             faro.receiver "default" {
@@ -195,9 +215,46 @@ resource "helm_release" "alloy" {
               }
             }
 
+            otelcol.receiver.otlp "default" {
+              grpc {
+                endpoint = "0.0.0.0:4317"
+              }
+              http {
+                endpoint = "0.0.0.0:4318"
+              }
+              output {
+                metrics = [otelcol.exporter.prometheus.default.input]
+                logs    = [otelcol.exporter.loki.default.input]
+                traces  = [otelcol.exporter.otlp.tempo.input]
+              }
+            }
+
+            otelcol.exporter.prometheus "default" {
+              forward_to = [prometheus.remote_write.mimir.receiver]
+            }
+
+            prometheus.remote_write "mimir" {
+              endpoint {
+                url = "http://mimir-distributor.observability.svc.cluster.local:8080/api/v1/push"
+              }
+            }
+
+            otelcol.exporter.loki "default" {
+              forward_to = [loki.write.default.receiver]
+            }
+
             loki.write "default" {
               endpoint {
                 url = "http://loki.observability.svc.cluster.local:3100/loki/api/v1/push"
+              }
+            }
+
+            otelcol.exporter.otlp "tempo" {
+              client {
+                endpoint = "tempo.observability.svc.cluster.local:4317"
+                tls {
+                  insecure = true
+                }
               }
             }
           EOT
