@@ -18,6 +18,11 @@ resource "helm_release" "grafana" {
 
   values = [
     yamlencode({
+      "grafana.ini" = {
+        feature_toggles = {
+          enable = "tempoApmTable tempoServiceGraph"
+        }
+      }
       datasources = {
         "datasources.yaml" = {
           apiVersion = 1
@@ -112,6 +117,14 @@ resource "helm_release" "tempo" {
         metricsGenerator = {
           enabled        = true
           remoteWriteUrl = "http://mimir-distributor.observability.svc.cluster.local:8080/api/v1/push"
+        }
+      }
+      metricsGenerator = {
+        enabled = true
+        config = {
+          metrics_generator = {
+            processors = ["service-graphs", "span-metrics"]
+          }
         }
       }
     })
