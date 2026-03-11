@@ -20,7 +20,7 @@ resource "helm_release" "grafana" {
     yamlencode({
       "grafana.ini" = {
         feature_toggles = {
-          enable = "tempoApmTable tempoServiceGraph"
+          enable = "tempoApmTable tempoServiceGraph traceqlEditor metricsSummary"
         }
       }
       datasources = {
@@ -144,14 +144,10 @@ resource "helm_release" "tempo" {
         metricsGenerator = {
           enabled        = true
           remoteWriteUrl = "http://mimir-distributor.observability.svc.cluster.local:8080/api/v1/push"
-          config = {
+        }
+        overrides = {
+          defaults = {
             metrics_generator = {
-              registry = {
-                collection_interval = "15s"
-                labels = {
-                  cluster = "dev"
-                }
-              }
               processors = ["service-graphs", "span-metrics"]
             }
           }
@@ -159,6 +155,9 @@ resource "helm_release" "tempo" {
       }
       queryFrontend = {
         query = {
+          enabled = true
+        }
+        mcp_server = {
           enabled = true
         }
       }
@@ -182,6 +181,19 @@ resource "helm_release" "mimir" {
     name  = "mimir.structuredConfig.multitenancy_enabled"
     value = "false"
   }
+
+  values = [
+    yamlencode({
+      mimir = {
+        structuredConfig = {
+          limits = {
+            accept_exemplars                    = true
+            native_histograms_ingestion_enabled = true
+          }
+        }
+      }
+    })
+  ]
 }
 
 resource "helm_release" "oncall" {
