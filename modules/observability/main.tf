@@ -45,6 +45,7 @@ resource "helm_release" "grafana" {
             },
             {
               name   = "Mimir"
+              uid    = "Mimir"
               type   = "prometheus"
               access = "proxy"
               url    = "http://mimir-query-frontend.observability.svc.cluster.local:8080/prometheus"
@@ -209,6 +210,12 @@ resource "helm_release" "alloy" {
             port       = 4318
             targetPort = 4318
             protocol   = "TCP"
+          },
+          {
+            name       = "pyroscope"
+            port       = 4040
+            targetPort = 4040
+            protocol   = "TCP"
           }
         ]
         configMap = {
@@ -237,6 +244,20 @@ resource "helm_release" "alloy" {
                 metrics = [otelcol.exporter.prometheus.default.input]
                 logs    = [otelcol.exporter.loki.default.input]
                 traces  = [otelcol.exporter.otlp.tempo.input]
+              }
+            }
+
+            pyroscope.receive_http "default" {
+              http {
+                listen_address = "0.0.0.0"
+                listen_port = 4040
+              }
+              forward_to = [pyroscope.write.default.receiver]
+            }
+
+            pyroscope.write "default" {
+              endpoint {
+                url = "http://pyroscope.observability.svc.cluster.local:4040"
               }
             }
 
