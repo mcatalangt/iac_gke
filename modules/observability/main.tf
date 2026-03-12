@@ -276,7 +276,8 @@ resource "helm_release" "alloy" {
                 listen_port = 12347
               }
               output {
-                logs = [loki.write.default.receiver]
+                logs   = [loki.write.default.receiver]
+                traces = [otelcol.exporter.otlp.tempo.input]
               }
             }
 
