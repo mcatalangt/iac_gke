@@ -276,8 +276,9 @@ resource "helm_release" "alloy" {
                 listen_port = 12347
               }
               output {
-                logs   = [loki.write.default.receiver]
-                traces = [otelcol.exporter.otlp.tempo.input]
+                logs    = [loki.write.default.receiver]
+                traces  = [otelcol.exporter.otlp.tempo.input]
+                metrics = [prometheus.remote_write.mimir.receiver]
               }
             }
 
@@ -342,4 +343,27 @@ resource "helm_release" "alloy" {
       }
     })
   ]
+}
+
+resource "helm_release" "beyla" {
+  name       = "beyla"
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "beyla"
+  namespace  = var.namespace
+  create_namespace = true
+
+  set {
+    name  = "config.data.discovery.services[0].k8s_namespace"
+    value = ".*" # Monitor all namespaces or modify as needed
+  }
+
+  set {
+    name  = "config.data.otel_traces_export.endpoint"
+    value = "http://alloy.observability.svc.cluster.local:4318" # Point to Alloy's OTLP HTTP receiver
+  }
+
+  set {
+    name  = "config.data.otel_metrics_export.endpoint"
+    value = "http://alloy.observability.svc.cluster.local:4318" # Point to Alloy's OTLP HTTP receiver
+  }
 }
