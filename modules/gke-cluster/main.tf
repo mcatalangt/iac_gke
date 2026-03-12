@@ -39,8 +39,6 @@ resource "google_container_node_pool" "primary_nodes" {
     machine_type = "e2-standard-4"
     disk_size_gb = 20
 
-    spot = true
-
     labels = {
       carga = "general"
     }
