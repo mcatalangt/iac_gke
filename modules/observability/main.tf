@@ -148,7 +148,7 @@ resource "helm_release" "tempo" {
         overrides = {
           defaults = {
             metrics_generator = {
-              processors = ["service-graphs", "span-metrics"]
+              processors = ["service-graphs", "span-metrics", "local-blocks"]
             }
           }
         }
