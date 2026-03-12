@@ -181,18 +181,6 @@ resource "helm_release" "mimir" {
     name  = "mimir.structuredConfig.multitenancy_enabled"
     value = "false"
   }
-
-  values = [
-    yamlencode({
-      mimir = {
-        structuredConfig = {
-          limits = {
-            accept_exemplars = true
-          }
-        }
-      }
-    })
-  ]
 }
 
 resource "helm_release" "oncall" {
