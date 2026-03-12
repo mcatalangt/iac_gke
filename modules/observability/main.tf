@@ -20,12 +20,15 @@ resource "helm_release" "grafana" {
     yamlencode({
       "grafana.ini" = {
         feature_toggles = {
-          enable = "tempoApmTable tempoServiceGraph traceqlEditor metricsSummary"
+          enable = "tempoApmTable tempoServiceGraph traceqlEditor metricsSummary externalServiceAccounts"
         }
         "plugin.grafana-oncall-app" = {
           # Conectar el frontend del plugin con el backend de OnCall que desplegamos
           oncall_api_url = "http://oncall-engine.observability.svc.cluster.local:8080"
         }
+      }
+      env = {
+        GF_AUTH_MANAGED_SERVICE_ACCOUNTS_ENABLED = "true"
       }
       plugins = [
         "grafana-oncall-app"
