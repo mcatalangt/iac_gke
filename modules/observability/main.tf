@@ -237,6 +237,12 @@ resource "helm_release" "oncall" {
     name  = "mariadb.image.tag"
     value = "10.11-debian-11"
   }
+
+  # Allow the OnCall engine to verify the plugin's token by telling it where Grafana lives
+  set {
+    name  = "externalGrafana.url"
+    value = "http://grafana.observability.svc.cluster.local:80"
+  }
 }
 
 resource "helm_release" "pyroscope" {
