@@ -187,8 +187,7 @@ resource "helm_release" "mimir" {
       mimir = {
         structuredConfig = {
           limits = {
-            accept_exemplars                    = true
-            native_histograms_ingestion_enabled = true
+            accept_exemplars = true
           }
         }
       }
