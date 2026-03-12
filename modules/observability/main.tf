@@ -22,7 +22,14 @@ resource "helm_release" "grafana" {
         feature_toggles = {
           enable = "tempoApmTable tempoServiceGraph traceqlEditor metricsSummary"
         }
+        "plugin.grafana-oncall-app" = {
+          # Conectar el frontend del plugin con el backend de OnCall que desplegamos
+          oncall_api_url = "http://oncall-engine.observability.svc.cluster.local:8080"
+        }
       }
+      plugins = [
+        "grafana-oncall-app"
+      ]
       datasources = {
         "datasources.yaml" = {
           apiVersion = 1
