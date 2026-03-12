@@ -349,7 +349,7 @@ resource "helm_release" "beyla" {
   name             = "beyla"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "beyla"
-  namespace        = kubernetes_namespace.observability.metadata[0].name
+  namespace        = "observability"
   create_namespace = true
 
   set {
