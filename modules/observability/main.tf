@@ -30,6 +30,14 @@ resource "helm_release" "grafana" {
       plugins = [
         "grafana-oncall-app"
       ]
+      extraConfigmapMounts = [
+        {
+          name      = "oncall-provisioning"
+          configMap = "grafana-oncall-provisioning"
+          mountPath = "/etc/grafana/provisioning/plugins/"
+          readOnly  = true
+        }
+      ]
       datasources = {
         "datasources.yaml" = {
           apiVersion = 1
@@ -372,5 +380,29 @@ resource "helm_release" "beyla" {
   set {
     name  = "config.data.otel_metrics_export.endpoint"
     value = "http://alloy.observability.svc.cluster.local:4318" # Point to Alloy's OTLP HTTP receiver
+  }
+}
+
+resource "kubernetes_config_map" "grafana_oncall_provisioning" {
+  metadata {
+    name      = "grafana-oncall-provisioning"
+    namespace = "observability"
+  }
+
+  data = {
+    "oncall.yaml" = yamlencode({
+      apps = [
+        {
+          type     = "grafana-oncall-app"
+          name     = "grafana-oncall-app"
+          disabled = false
+          jsonData = {
+            stackId      = 5
+            orgId        = 1
+            onCallApiUrl = "http://oncall-engine.observability.svc.cluster.local:8080"
+          }
+        }
+      ]
+    })
   }
 }
