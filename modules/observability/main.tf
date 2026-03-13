@@ -302,7 +302,6 @@ resource "helm_release" "alloy" {
               output {
                 logs    = [loki.write.default.receiver]
                 traces  = [otelcol.exporter.otlp.tempo.input]
-                metrics = [prometheus.remote_write.mimir.receiver]
               }
             }
 
