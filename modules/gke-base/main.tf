@@ -36,7 +36,7 @@ resource "google_container_node_pool" "primary_nodes" {
   node_count = 2
 
   node_config {
-    machine_type = "e2-standard-4"
+    machine_type = "n1-standard-2"
     disk_size_gb = 20
 
     labels = {

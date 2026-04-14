@@ -34,7 +34,7 @@ output "debug_cluster_name" {
 # Recurso: Node Pool 1
 resource "google_container_node_pool" "primary_nodes" {
   count    = contains(["k8s-base"], var.cluster_name) ? 1 : 0
-  name     = "${var.environment}-${var.cluster_name}-nodes-4"
+  name     = "${var.environment}-${var.cluster_name}-nodes-2"
   location = var.region
   cluster  = google_container_cluster.gke_cluster.name
 
