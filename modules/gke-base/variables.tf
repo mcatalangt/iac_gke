@@ -22,3 +22,13 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "deploy_rag_stack" {
+  description = "Despliega recursos adicionales de GPU si el Stack RAG está habilitado"
+  type        = string
+  default     = "false"
+}
+
+locals {
+  deploy_rag_stack_bool = var.deploy_rag_stack == "true"
+}
