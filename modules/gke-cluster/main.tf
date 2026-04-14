@@ -27,6 +27,10 @@ resource "google_container_cluster" "gke_cluster" {
   remove_default_node_pool = true
 }
 
+output "debug_cluster_name" {
+  value       = var.cluster_name
+  description = "Valor actual que está recibiendo cluster_name"
+}
 # Recurso: Node Pool 1
 resource "google_container_node_pool" "primary_nodes" {
   count    = contains(["k8s-base"], var.cluster_name) ? 1 : 0

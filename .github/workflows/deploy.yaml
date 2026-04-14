@@ -17,11 +17,11 @@ on:
         required: true
         type: choice
         options:
-          - k8s_base
+          - k8s-base
           - rag
           - data
           - observability
-        default: 'k8s_base'
+        default: 'k8s-base'
 
   push:
     branches: [ "main" ]
@@ -40,7 +40,7 @@ jobs:
       GOOGLE_PROJECT_ID: ${{ vars.GCP_PROJECT }}
       GOOGLE_REGION: ${{ vars.GCP_REGION }}
       # Determine value based on event type: if push, use default (e.g. k8s_only); if workflow_dispatch, respect choice input
-      TF_VAR_deploy_stack: "${{ github.event_name == 'push' && 'k8s_only' || inputs.deploy_stack }}"
+      TF_VAR_deploy_stack: "${{ github.event_name == 'push' && 'k8s-base' || inputs.deploy_stack }}"
 
     steps:
       - name: Checkout Repository
