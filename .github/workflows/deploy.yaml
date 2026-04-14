@@ -12,36 +12,20 @@ on:
           - dev
           - staging
           - prod
-      deploy_RAG_stack:
-        description: 'Desplegar Stack de RAG'
+      deploy_stack:
+        description: 'Constelación/Stack a desplegar'
         required: true
-        type: boolean
-        default: false
-      deploy_MCP_stack:
-        description: 'Desplegar Stack de MCP'
-        required: true
-        type: boolean
-        default: false
-      deploy_SubAgents_stack:
-        description: 'Desplegar Stack de SubAgents'
-        required: true
-        type: boolean
-        default: false
-      deploy_A2A_stack:
-        description: 'Desplegar Stack de A2A'
-        required: true
-        type: boolean
-        default: false
-      deploy_Data_stack:
-        description: 'Desplegar Stack de Data'
-        required: true
-        type: boolean
-        default: false
-      deploy_Observability_stack:
-        description: 'Desplegar Stack de Observability'
-        required: true
-        type: boolean
-        default: true
+        type: choice
+        options:
+          - all
+          - k8s_only
+          - rag
+          - mcp
+          - subagents
+          - a2a
+          - data
+          - observability
+        default: 'all'
 
   push:
     branches: [ "main" ]
@@ -59,13 +43,8 @@ jobs:
       TARGET_ENV: ${{ inputs.environment || 'dev' }}
       GOOGLE_PROJECT_ID: ${{ vars.GCP_PROJECT }}
       GOOGLE_REGION: ${{ vars.GCP_REGION }}
-      # Determine values based on event type: if push, use defaults; if workflow_dispatch, respect actual boolean input
-      TF_VAR_deploy_rag_stack: "${{ github.event_name == 'push' && 'true' || inputs.deploy_RAG_stack }}"
-      TF_VAR_deploy_mcp_stack: "${{ github.event_name == 'push' && 'false' || inputs.deploy_MCP_stack }}"
-      TF_VAR_deploy_subagents_stack: "${{ github.event_name == 'push' && 'false' || inputs.deploy_SubAgents_stack }}"
-      TF_VAR_deploy_a2a_stack: "${{ github.event_name == 'push' && 'false' || inputs.deploy_A2A_stack }}"
-      TF_VAR_deploy_data_stack: "${{ github.event_name == 'push' && 'false' || inputs.deploy_Data_stack }}"
-      TF_VAR_deploy_observability_stack: "${{ github.event_name == 'push' && 'false' || inputs.deploy_Observability_stack }}"
+      # Determine value based on event type: if push, use default (e.g. k8s_only); if workflow_dispatch, respect choice input
+      TF_VAR_deploy_stack: "${{ github.event_name == 'push' && 'k8s_only' || inputs.deploy_stack }}"
 
     steps:
       - name: Checkout Repository

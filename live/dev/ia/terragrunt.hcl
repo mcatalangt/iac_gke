@@ -2,7 +2,8 @@ terraform {
   source = "../../../modules/ia"
 }
 
-skip = get_env("TF_VAR_deploy_rag_stack", "false") != "true"
+# skip si deploy_stack NO es 'rag' NI 'all'
+skip = !(get_env("TF_VAR_deploy_stack", "all") == "all" || get_env("TF_VAR_deploy_stack", "all") == "rag")
 
 include "root" {
   path = find_in_parent_folders()
