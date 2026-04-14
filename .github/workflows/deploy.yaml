@@ -13,19 +13,15 @@ on:
           - staging
           - prod
       deploy_stack:
-        description: 'Constelación/Stack a desplegar'
+        description: 'Stack a desplegar'
         required: true
         type: choice
         options:
-          - all
-          - k8s_only
+          - k8s_base
           - rag
-          - mcp
-          - subagents
-          - a2a
           - data
           - observability
-        default: 'all'
+        default: 'k8s_base'
 
   push:
     branches: [ "main" ]
@@ -89,8 +85,8 @@ jobs:
                 terragrunt --version
 
       - name: Terragrunt Plan
-        run: cd live/dev && terragrunt run-all plan --terragrunt-non-interactive --terragrunt-source-update
+        run: cd live/desarrollo && terragrunt run-all plan --terragrunt-non-interactive --terragrunt-source-update
 
       - name: Terragrunt Apply
         if: github.ref == 'refs/heads/main'
-        run: cd live/dev && terragrunt run-all apply --terragrunt-non-interactive  --terragrunt-source-update
+        run: cd live/desarrollo && terragrunt run-all apply --terragrunt-non-interactive  --terragrunt-source-update

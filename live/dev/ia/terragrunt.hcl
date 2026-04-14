@@ -3,7 +3,7 @@ terraform {
 }
 
 # skip si deploy_stack NO es 'rag' NI 'all'
-skip = !(get_env("TF_VAR_deploy_stack", "all") == "all" || get_env("TF_VAR_deploy_stack", "all") == "rag")
+skip = !(get_env("TF_VAR_deploy_stack", "all_components") == "all_components" || get_env("TF_VAR_deploy_stack", "all_components") == "rag")
 
 include "root" {
   path = find_in_parent_folders()

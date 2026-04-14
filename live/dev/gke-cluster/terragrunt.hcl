@@ -15,7 +15,7 @@ terraform {
 inputs = {
   project_id = "${local.gcp_project_id}"
   region   = "${local.gcp_region}"
-  cluster_name = "ia"
+  cluster_name = get_env("TF_VAR_deploy_stack")
   environment =  "dev"
-  deploy_rag_stack = get_env("TF_VAR_deploy_stack", "all") == "all" || get_env("TF_VAR_deploy_stack", "all") == "rag"
+#deploy_rag_stack = get_env("TF_VAR_deploy_stack", "all_components") == "all_components" || get_env("TF_VAR_deploy_stack", "all_components") == "rag"
 }
