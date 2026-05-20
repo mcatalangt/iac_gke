@@ -19,7 +19,7 @@ dependency "gke" {
   mock_outputs = {
     cluster_endpoint       = "https://1.2.3.4"
     cluster_ca_certificate = "dGVzdA=="
-    token                  = "mock-token"
+    token                  = "mock-tokendffff"
   }
 
   mock_outputs_allowed_terraform_commands = ["validate", "plan", "plan-all"]

@@ -27,8 +27,32 @@ resource "google_container_cluster" "gke_cluster" {
   remove_default_node_pool = true
 }
 
+output "debug_cluster_name" {
+  value       = var.cluster_name
+  description = "Valor actual que está recibiendo cluster_name"
+}
 # Recurso: Node Pool 1
 resource "google_container_node_pool" "primary_nodes" {
+  count    = contains(["k8s-base"], var.cluster_name) ? 1 : 0
+  name     = "${var.environment}-${var.cluster_name}-nodes-2"
+  location = var.region
+  cluster  = google_container_cluster.gke_cluster.name
+
+  node_count = 1
+
+  node_config {
+    machine_type = "e2-standard-2"
+    disk_size_gb = 10
+
+    labels = {
+      carga = "general"
+    }
+  }
+}
+
+# Recurso: Node Pool 2
+resource "google_container_node_pool" "primary_nodes" {
+  count    = contains(["observability", "data"], var.cluster_name) ? 1 : 0
   name     = "${var.environment}-${var.cluster_name}-nodes-4"
   location = var.region
   cluster  = google_container_cluster.gke_cluster.name
@@ -36,7 +60,7 @@ resource "google_container_node_pool" "primary_nodes" {
   node_count = 2
 
   node_config {
-    machine_type = "n1-standard-2"
+    machine_type = "e2-standard-4"
     disk_size_gb = 20
 
     labels = {
@@ -45,9 +69,9 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-# Recurso: Node Pool 2 (GPU Spot)
+# Recurso: Node Pool 3 (GPU Spot)
 resource "google_container_node_pool" "secondary_nodes" {
-  count    = local.deploy_rag_stack_bool ? 1 : 0
+  count    = contains(["rag"], var.cluster_name) ? 1 : 0
   name     = "${var.environment}-${var.cluster_name}-gpu-nodes"
   location = var.region
   cluster  = google_container_cluster.gke_cluster.name
